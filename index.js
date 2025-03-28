@@ -120,6 +120,7 @@ app.post("/login", (req, res) => {
             `, {
             httpOnly: true, // Ngăn chặn truy cập từ JavaScript (giảm nguy cơ XSS)
             secure: true,   // Chỉ gửi cookie qua HTTPS (chỉ bật trên production)
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Cookie mất sau 7 ngày
             sameSite: "None", // Ngăn chặn CSRF
         }).json({ success: true, message: "Login successful" });
         
