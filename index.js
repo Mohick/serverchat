@@ -119,7 +119,6 @@ app.post("/login", (req, res) => {
             httpOnly: true, // Ngăn chặn truy cập từ JavaScript (giảm nguy cơ XSS)
             secure: true,   // Chỉ gửi cookie qua HTTPS (chỉ bật trên production)
             sameSite: "None", // Ngăn chặn CSRF
-            path: "/", // Cookie có thể được gửi trên toàn bộ trang web
         }).json({ success: true, message: "Login successful" });
         
     } else {
