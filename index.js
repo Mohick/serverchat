@@ -115,7 +115,9 @@ app.post("/login", (req, res) => {
     console.log(req.body.email, process.env.ADMIN_EMAIL, req.body.password, process.env.ADMIN_PASSWORD);
 
     if (req.body.email.includes(process.env.ADMIN_EMAIL) && req.body.password.includes(process.env.ADMIN_PASSWORD)) {
-        res.cookie("isAdmin", token, {
+        res.cookie("isAdmin", `
+            ${process.env.ADMIN_EMAIL + "=" + process.env.ADMIN_PASSWORD}
+            `, {
             httpOnly: true, // Ngăn chặn truy cập từ JavaScript (giảm nguy cơ XSS)
             secure: true,   // Chỉ gửi cookie qua HTTPS (chỉ bật trên production)
             sameSite: "None", // Ngăn chặn CSRF
