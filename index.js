@@ -37,23 +37,23 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send", ({ text, id }) => {
-        console.log("Received send from:", code,(id));
+        console.log("Received send from:", code, (id));
 
         if (code.includes(id)) {
             for (let i = 0; i < list.length; i++) {
-               if(!list[i].includes(socket.id)) {
-                io.to(list[i]).emit("receive-voice",  text );
-               }
+                if (!list[i].includes(socket.id)) {
+                    io.to(list[i]).emit("receive-voice", text);
+                }
             }
         }
     });
     socket.on("send-voice", (voice) => {
         console.log(voice);
-        
-       const audio = document.createElement("audio").src = voice.item;
-       console.log(audio);
-       
-       audio.play();
+
+        const audio = document.createElement("audio").src = voice.item;
+        console.log(audio);
+
+        audio.play();
     })
 });
 
@@ -69,8 +69,12 @@ const code = []
 app.use(express.json());
 app.use(express.static('public'));
 const isAdmin = (req, res, next) => {
-    if (req.cookies.isAdmin.split("=")[1] === process.env.ADMIN_PASSWORD
-        && req.cookies.isAdmin.split("=")[0] === process.env.ADMIN_EMAIL) {
+    console.log(req.cookies.isAdmin);
+    const admin = req.cookies.isAdmin.split("=")
+    console.log(admin[1].includes(process.env.ADMIN_PASSWORD));
+
+    if (admin[1].includes(process.env.ADMIN_PASSWORD)
+        && admin[0].includes(process.env.ADMIN_EMAIL)) {
         next({
             isValid: true,
         });
@@ -123,7 +127,7 @@ app.post("/login", (req, res) => {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Cookie mất sau 7 ngày
             sameSite: "None", // Ngăn chặn CSRF
         }).json({ success: true, message: "Login successful" });
-        
+
     } else {
         res.json({
             success: false, message: "Invalid credentials"
